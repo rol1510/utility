@@ -1,3 +1,3 @@
 # rol1510-utility
 
-Helpful utility
+Usefull stuff for simple helper scripts
