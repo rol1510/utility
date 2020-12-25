@@ -28,7 +28,6 @@ jobs:
       - name: push changes
         run: |
           echo ${{ secrets.GH_TOKEN }}
-          echo ${{ secrets.bot.GH_TOKEN }}
           git remote set-url origin ${{ secrets.GH_TOKEN }}@github.com:rol1510/utility.git
           if [[ `git status doc/* --porcelain` ]]; then
             # Changes
