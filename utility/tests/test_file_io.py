@@ -19,7 +19,10 @@ def test_replace_file_name():
     assert replace_file_name('A_file', 'B_new') == 'B_new'
 
     assert replace_file_name('dir/A_file.py', 'B_new.py') == 'dir/B_new.py'
-    assert replace_file_name('dir\\A_file.py', 'B_new.py') == 'dir\\B_new.py'
+
+    if sys.platform.startswith('win'):
+        # Backslashes only work on windows
+        assert replace_file_name('\\dir\\A_file.py', 'B_new.py') == '\\dir\\B_new.py'
 
     assert replace_file_name('dir1/dir2/A_file.py', 'B_new.py') == 'dir1/dir2/B_new.py'
 
