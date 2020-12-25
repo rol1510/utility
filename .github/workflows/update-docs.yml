@@ -29,6 +29,8 @@ jobs:
         run: |
           echo ${{ secrets.GH_TOKEN }}
           git remote set-url origin ${{ secrets.GH_TOKEN }}@github.com:rol1510/utility.git
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if [[ `git status doc/* --porcelain` ]]; then
             # Changes
             BRANCH=$(echo ${GITHUB_REF} | cut -d'/' -f 3-)
