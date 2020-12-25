@@ -1,5 +1,5 @@
-/build
-/dist
-/rol1510_utility.egg-info
-*/__pycache__
+build/
+dist/
+rol1510_utility.egg-info/
+__pycache__/
 test.py
