@@ -27,17 +27,22 @@ jobs:
         run: pdoc --html --output-dir doc --config show_source_code=True --force utility
       - name: push changes
         run: |
-          # echo ${{ secrets.GH_TOKEN }}
-          git remote set-url origin ${{ secrets.GH_TOKEN }}@github.com:rol1510/utility.git
+          echo ${{ secrets.GITHUB_TOKEN }}
+          git remote set-url origin ${{ secrets.GITHUB_TOKEN }}@github.com:rol1510/utility.git
           git config --global user.name "${{ secrets.GH_USER }}"
           git config --global user.email "${{ secrets.GH_EMAIL }}"
+          echo hit 0
           if [[ `git status doc/* --porcelain` ]]; then
             # Changes
             BRANCH=$(echo ${GITHUB_REF} | cut -d'/' -f 3-)
             git add doc/*
+            echo hit 1
             git commit -m "automatic rebuild of documentation"
+            echo hit 2
             git fetch origin $BRANCH
+            echo hit 3
             git push origin HEAD:$BRANCH
+            echo hit 4
           else
             # No changes
             echo no changes detected
