@@ -30,11 +30,11 @@ jobs:
           # if [[ `git status doc/* --porcelain` ]]; then
           echo GH_USER: ${{ secrets.GH_USER }}
           echo GH_MAIL: ${{ secrets.GH_MAIL }}
-          echo GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          echo GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
           git config user.name ${{ secrets.GH_USER }}
           git config user.email "${{ secrets.GH_MAIL }}"
-          git remote add gh-token "https://${{ secrets.GH_TOKEN}}@github.com/:user/:repo.git"
+          git remote add gh-token "https://${{ secrets.GITHUB_TOKEN}}@github.com/:user/:repo.git"
           git fetch gh-token && git fetch gh-token gh-pages:gh-pages
           pdoc --html --output-dir doc --config show_source_code=True --force utility
           git push gh-token gh-pages
