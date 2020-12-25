@@ -27,9 +27,15 @@ jobs:
         run: pdoc --html --output-dir doc --config show_source_code=True --force utility
       - name: push changes
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ `git status doc/* --porcelain` ]]; then
+            # Changes
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add doc/*
-          git commit -m "automatic rebuild of documentation"
-          git push
+            git add doc/*
+            git commit -m "automatic rebuild of documentation"
+            git push
+          else
+            # No changes
+            echo no changes detected
+          fi
