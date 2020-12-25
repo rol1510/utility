@@ -31,10 +31,12 @@ jobs:
             # Changes
             echo GITHUB_REF: ${GITHUB_REF}
             echo GITHUB_REF branch: ${GITHUB_REF##*/}
+            BRANCH=$(echo ${GITHUB_REF} | cut -d'/' -f 3-)
+            echo branch: $BRANCH
             git config --global user.name "github-actions[bot]"
             git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-            git checkout ${GITHUB_REF##*/}
+            git checkout $BRANCH
             git add doc/*
             git commit -m "automatic rebuild of documentation"
             git push
