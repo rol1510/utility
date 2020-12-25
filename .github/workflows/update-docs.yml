@@ -27,7 +27,7 @@ jobs:
         run: pdoc --html --output-dir doc --config show_source_code=True --force utility
       - name: push changes
         run: |
-          echo ${{ secrets.GH_TOKEN }}
+          # echo ${{ secrets.GH_TOKEN }}
           git remote set-url origin ${{ secrets.GH_TOKEN }}@github.com:rol1510/utility.git
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
