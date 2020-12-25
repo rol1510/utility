@@ -23,23 +23,34 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install pdoc3
           if [ -f python_requirements.txt ]; then pip install -r python_requirements.txt; fi
-      - name: Run pdoc
-        run: pdoc --html --output-dir doc --config show_source_code=True --force utility
+      # - name: Run pdoc
+      #   run: pdoc --html --output-dir doc --config show_source_code=True --force utility
       - name: push changes
         run: |
           if [[ `git status doc/* --porcelain` ]]; then
-            # Changes
-            echo GITHUB_REF: ${GITHUB_REF}
-            echo GITHUB_REF branch: ${GITHUB_REF##*/}
-            BRANCH=$(echo ${GITHUB_REF} | cut -d'/' -f 3-)
-            echo branch: $BRANCH
-            git config --global user.name "github-actions[bot]"
-            git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            echo GH_USER: ${{ secrets.GH_USER }}
+            echo GH_MAIL: ${{ secrets.GH_MAIL }}
+            echo GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-            git checkout $BRANCH
-            git add doc/*
-            git commit -m "automatic rebuild of documentation"
-            git push
+            git config user.name ${{ secrets.GH_USER }}
+            git config user.email "${{ secrets.GH_MAIL }}"
+            git remote add gh-token "https://${{ secrets.GH_TOKEN}}@github.com/:user/:repo.git"
+            git fetch gh-token && git fetch gh-token gh-pages:gh-pages
+            pdoc --html --output-dir doc --config show_source_code=True --force utility
+            git push gh-token gh-pages
+            # Changes
+            # echo GITHUB_REF: ${GITHUB_REF}
+            # echo GITHUB_REF branch: ${GITHUB_REF##*/}
+            # BRANCH=$(echo ${GITHUB_REF} | cut -d'/' -f 3-)
+            # echo branch: $BRANCH
+
+            # git config --global user.name "github-actions[bot]"
+            # git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+            # git checkout $BRANCH
+            # git add doc/*
+            # git commit -m "automatic rebuild of documentation"
+            # git push
           else
             # No changes
             echo no changes detected
