@@ -1,9 +1,9 @@
-# This action will run pdoc to build a html documentation after every push and pull request
+# This action will run pdoc to build a html documentation after every push
 # If something changed, the changes will be committed to the current branch
 # See for more info: https://github.com/ad-m/github-push-action
 
 name: Update Docs
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:
