@@ -54,3 +54,40 @@ def process_files(func, file_wildcard):
     files = get_file_paths_from_wildcard(file_wildcard)
     for path in files:
         func(path)
+
+def mkdir_if_nonexisting(path):
+    """ Will create the given directory if it does not exist already
+    Args:
+        path: the path for the directory in question
+    Returns:
+        True if the directory was created else False
+    """
+    if os.path.isdir(path) == False:
+        os.mkdir(path)
+        return True
+    return False
+
+def remove_if_existing(path):
+    """ Will delete the given file if it exists
+    Args:
+        path: the path for the file in question
+    Returns:
+        True if the file was deleted else False
+    """
+    if os.path.isfile(path):
+        os.remove(path)
+        return True
+    return False
+
+def rename_if_existing(old_name, new_name):
+    """ Will rename the given file if it exists
+    Args:
+        old_name: the current name of the file in question
+        new_name: the new name
+    Returns:
+        True if the file was renamed else False
+    """
+    if os.path.isfile(old_name):
+        os.rename(old_name, new_name)
+        return True
+    return False

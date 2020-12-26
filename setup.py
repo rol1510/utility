@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="rol1510-utility",
-    version="0.0.3",
+    version="0.1.2",
     author="Roland Strasser",
     author_email="roland1510s@gmail.com",
     description="Usefull stuff for simple helper scripts",
