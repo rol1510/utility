@@ -81,7 +81,44 @@ def process_files(func, file_wildcard):
     &#34;&#34;&#34;
     files = get_file_paths_from_wildcard(file_wildcard)
     for path in files:
-        func(path)</code></pre>
+        func(path)
+
+def mkdir_if_nonexisting(path):
+    &#34;&#34;&#34; Will create the given directory if it does not exist already
+    Args:
+        path: the path for the directory in question
+    Returns:
+        True if the directory was created else False
+    &#34;&#34;&#34;
+    if os.path.isdir(path) == False:
+        os.mkdir(path)
+        return True
+    return False
+
+def remove_if_existing(path):
+    &#34;&#34;&#34; Will delete the given file if it exists
+    Args:
+        path: the path for the file in question
+    Returns:
+        True if the file was deleted else False
+    &#34;&#34;&#34;
+    if os.path.isfile(path):
+        os.remove(path)
+        return True
+    return False
+
+def rename_if_existing(old_name, new_name):
+    &#34;&#34;&#34; Will rename the given file if it exists
+    Args:
+        old_name: the current name of the file in question
+        new_name: the new name
+    Returns:
+        True if the file was renamed else False
+    &#34;&#34;&#34;
+    if os.path.isfile(old_name):
+        os.rename(old_name, new_name)
+        return True
+    return False</code></pre>
 </details>
 </section>
 <section>
@@ -136,6 +173,35 @@ def process_files(func, file_wildcard):
     return glob.glob(wildcard)</code></pre>
 </details>
 </dd>
+<dt id="utility.file_io.mkdir_if_nonexisting"><code class="name flex">
+<span>def <span class="ident">mkdir_if_nonexisting</span></span>(<span>path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Will create the given directory if it does not exist already</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong></dt>
+<dd>the path for the directory in question</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>True if the directory was created else False</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def mkdir_if_nonexisting(path):
+    &#34;&#34;&#34; Will create the given directory if it does not exist already
+    Args:
+        path: the path for the directory in question
+    Returns:
+        True if the directory was created else False
+    &#34;&#34;&#34;
+    if os.path.isdir(path) == False:
+        os.mkdir(path)
+        return True
+    return False</code></pre>
+</details>
+</dd>
 <dt id="utility.file_io.process_files"><code class="name flex">
 <span>def <span class="ident">process_files</span></span>(<span>func, file_wildcard)</span>
 </code></dt>
@@ -178,6 +244,67 @@ def process_files(func, file_wildcard):
     files = get_file_paths_from_wildcard(file_wildcard)
     for path in files:
         func(path)</code></pre>
+</details>
+</dd>
+<dt id="utility.file_io.remove_if_existing"><code class="name flex">
+<span>def <span class="ident">remove_if_existing</span></span>(<span>path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Will delete the given file if it exists</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong></dt>
+<dd>the path for the file in question</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>True if the file was deleted else False</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove_if_existing(path):
+    &#34;&#34;&#34; Will delete the given file if it exists
+    Args:
+        path: the path for the file in question
+    Returns:
+        True if the file was deleted else False
+    &#34;&#34;&#34;
+    if os.path.isfile(path):
+        os.remove(path)
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="utility.file_io.rename_if_existing"><code class="name flex">
+<span>def <span class="ident">rename_if_existing</span></span>(<span>old_name, new_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Will rename the given file if it exists</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>old_name</code></strong></dt>
+<dd>the current name of the file in question</dd>
+<dt><strong><code>new_name</code></strong></dt>
+<dd>the new name</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>True if the file was renamed else False</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rename_if_existing(old_name, new_name):
+    &#34;&#34;&#34; Will rename the given file if it exists
+    Args:
+        old_name: the current name of the file in question
+        new_name: the new name
+    Returns:
+        True if the file was renamed else False
+    &#34;&#34;&#34;
+    if os.path.isfile(old_name):
+        os.rename(old_name, new_name)
+        return True
+    return False</code></pre>
 </details>
 </dd>
 <dt id="utility.file_io.replace_file_name"><code class="name flex">
@@ -242,7 +369,10 @@ def process_files(func, file_wildcard):
 <li><code><a title="utility.file_io.get_dir" href="#utility.file_io.get_dir">get_dir</a></code></li>
 <li><code><a title="utility.file_io.get_file_names_from_wildcard" href="#utility.file_io.get_file_names_from_wildcard">get_file_names_from_wildcard</a></code></li>
 <li><code><a title="utility.file_io.get_file_paths_from_wildcard" href="#utility.file_io.get_file_paths_from_wildcard">get_file_paths_from_wildcard</a></code></li>
+<li><code><a title="utility.file_io.mkdir_if_nonexisting" href="#utility.file_io.mkdir_if_nonexisting">mkdir_if_nonexisting</a></code></li>
 <li><code><a title="utility.file_io.process_files" href="#utility.file_io.process_files">process_files</a></code></li>
+<li><code><a title="utility.file_io.remove_if_existing" href="#utility.file_io.remove_if_existing">remove_if_existing</a></code></li>
+<li><code><a title="utility.file_io.rename_if_existing" href="#utility.file_io.rename_if_existing">rename_if_existing</a></code></li>
 <li><code><a title="utility.file_io.replace_file_name" href="#utility.file_io.replace_file_name">replace_file_name</a></code></li>
 </ul>
 </li>
