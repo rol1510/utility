@@ -36,7 +36,7 @@ def pad_2d_list(data, element, thickness=1):
     """ adds padding "around" a list of lists
 
     List should be a "rectangle"  
-    eg: pad_1d_list([1], 0) -> returns [[0,0,0], [0,1,0], [0,0,0]]
+    eg: pad_2d_list([[1]], 0) -> returns [[0,0,0], [0,1,0], [0,0,0]]
 
     Args:
         data:      the list to pad
@@ -58,8 +58,7 @@ def pad_2d_list(data, element, thickness=1):
 def pad_3d_list(data, element, thickness=1):
     """ adds padding "around" a list of lists of lists
 
-    List should be a "box"  
-    eg: pad_1d_list([1], 0) -> returns [[0,0,0], [0,1,0], [0,0,0]]
+    List should be a "box"
 
     Args:
         data:      the list to pad
