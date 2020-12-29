@@ -64,7 +64,7 @@ def pad_2d_list(data, element, thickness=1):
     &#34;&#34;&#34; adds padding &#34;around&#34; a list of lists
 
     List should be a &#34;rectangle&#34;  
-    eg: pad_1d_list([1], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]
+    eg: pad_2d_list([[1]], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]
 
     Args:
         data:      the list to pad
@@ -86,8 +86,7 @@ def pad_2d_list(data, element, thickness=1):
 def pad_3d_list(data, element, thickness=1):
     &#34;&#34;&#34; adds padding &#34;around&#34; a list of lists of lists
 
-    List should be a &#34;box&#34;  
-    eg: pad_1d_list([1], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]
+    List should be a &#34;box&#34;
 
     Args:
         data:      the list to pad
@@ -162,7 +161,7 @@ def pad_3d_list(data, element, thickness=1):
 <dd>
 <div class="desc"><p>adds padding "around" a list of lists</p>
 <p>List should be a "rectangle"<br>
-eg: pad_1d_list([1], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]</p>
+eg: pad_2d_list([[1]], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>data</code></strong></dt>
@@ -184,7 +183,7 @@ eg: pad_1d_list([1], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]</p>
     &#34;&#34;&#34; adds padding &#34;around&#34; a list of lists
 
     List should be a &#34;rectangle&#34;  
-    eg: pad_1d_list([1], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]
+    eg: pad_2d_list([[1]], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]
 
     Args:
         data:      the list to pad
@@ -209,8 +208,7 @@ eg: pad_1d_list([1], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]</p>
 </code></dt>
 <dd>
 <div class="desc"><p>adds padding "around" a list of lists of lists</p>
-<p>List should be a "box"<br>
-eg: pad_1d_list([1], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]</p>
+<p>List should be a "box"</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>data</code></strong></dt>
@@ -231,8 +229,7 @@ eg: pad_1d_list([1], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]</p>
 <pre><code class="python">def pad_3d_list(data, element, thickness=1):
     &#34;&#34;&#34; adds padding &#34;around&#34; a list of lists of lists
 
-    List should be a &#34;box&#34;  
-    eg: pad_1d_list([1], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]
+    List should be a &#34;box&#34;
 
     Args:
         data:      the list to pad
