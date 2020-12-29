@@ -25,7 +25,7 @@ def pad_1d_list(data, element, thickness=1):
         element:   gets added as padding
         thickness: how many layers of padding
     Returns:
-        the original list for chaining
+        the list for chaining
     """
     for i in range(thickness):
         data.insert(0, element)
@@ -43,7 +43,7 @@ def pad_2d_list(data, element, thickness=1):
         element:   gets added as padding
         thickness: how many layers of padding
     Returns:
-        the original list for chaining
+        the list for chaining
     """
     # pad sides
     for i in range(len(data)):
