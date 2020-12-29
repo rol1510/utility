@@ -70,3 +70,17 @@ def test_pad_2d_list():
     assert pad_2d_list(copy.deepcopy(l), 0, 0) == l
     assert pad_2d_list(copy.deepcopy(l), 0, 1) == o1
     assert pad_2d_list(copy.deepcopy(l), 0, 2) == o2
+
+    # test different dimensions
+    l = [[1, 2]]
+    o = [[0, 0, 0, 0],
+         [0, 1, 2, 0],
+         [0, 0, 0, 0]]
+    assert pad_2d_list(copy.deepcopy(l), 0) == o
+
+    l = [[1], [2]]
+    o = [[0, 0, 0],
+         [0, 1, 0],
+         [0, 2, 0],
+         [0, 0, 0]]
+    assert pad_2d_list(copy.deepcopy(l), 0) == o
