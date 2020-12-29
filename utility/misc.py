@@ -54,3 +54,29 @@ def pad_2d_list(data, element, thickness=1):
     top_bottom_padding = [element] * width
     pad_1d_list(data, top_bottom_padding, thickness)
     return data
+
+def pad_3d_list(data, element, thickness=1):
+    """ adds padding "around" a list of lists of lists
+
+    List should be a "box"  
+    eg: pad_1d_list([1], 0) -> returns [[0,0,0], [0,1,0], [0,0,0]]
+
+    Args:
+        data:      the list to pad
+        element:   gets added as padding
+        thickness: how many layers of padding
+    Returns:
+        the list for chaining
+    """
+    # pad sides
+    for i in range(len(data)):
+        pad_2d_list(data[i], element, thickness)
+
+    # pad top and bottom
+    width = len(data[0])
+    height = len(data[0][0])
+    padding = [[element] * height] * width
+    pad_1d_list(data, padding, thickness)
+    return data
+
+
