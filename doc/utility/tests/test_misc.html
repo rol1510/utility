@@ -111,7 +111,127 @@ def test_pad_2d_list():
          [0, 1, 0],
          [0, 2, 0],
          [0, 0, 0]]
-    assert pad_2d_list(copy.deepcopy(l), 0) == o</code></pre>
+    assert pad_2d_list(copy.deepcopy(l), 0) == o
+
+def test_pad_3d_list():
+    # simple test
+    l = [[[1]]]
+    o = [
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,1,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0]],
+        ]
+    assert pad_3d_list(l, 0) == o
+    assert l == o
+
+    # test different sizes
+    l = [[[1, 2]]]
+    o = [
+            [[0,0,0,0],
+             [0,0,0,0],
+             [0,0,0,0]],
+            [[0,0,0,0],
+             [0,1,2,0],
+             [0,0,0,0]],
+            [[0,0,0,0],
+             [0,0,0,0],
+             [0,0,0,0]],
+        ]
+    assert pad_3d_list(l, 0) == o
+
+    l = [[[1],[2]]]
+    o = [
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,1,0],
+             [0,2,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0],
+             [0,0,0]],
+        ]
+    assert pad_3d_list(l, 0) == o
+
+    l = [[[1]],[[2]]]
+    o = [
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,1,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,2,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0]],
+        ]
+    assert pad_3d_list(l, 0) == o
+
+    # test complex
+    l = [[[11,12,13], [13,14,15]],[[21,22,23], [23,24,25]]]
+    o = [
+            [[0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0]],
+            [[0, 0, 0, 0, 0],
+             [0,11,12,13, 0],
+             [0,13,14,15, 0],
+             [0, 0, 0, 0, 0]],
+            [[0, 0, 0, 0, 0],
+             [0,21,22,23, 0],
+             [0,23,24,25, 0],
+             [0, 0, 0, 0, 0]],
+            [[0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0]],
+        ]
+    assert pad_3d_list(l, 0) == o
+
+    # test thickness
+    l = [[[1]]]
+    o = [
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,1,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+        ]
+    assert pad_3d_list(l, 0, 0) == l
+    assert pad_3d_list(l, 0, 2) == o</code></pre>
 </details>
 </section>
 <section>
@@ -199,6 +319,136 @@ def test_pad_2d_list():
     assert pad_2d_list(copy.deepcopy(l), 0) == o</code></pre>
 </details>
 </dd>
+<dt id="utility.tests.test_misc.test_pad_3d_list"><code class="name flex">
+<span>def <span class="ident">test_pad_3d_list</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_pad_3d_list():
+    # simple test
+    l = [[[1]]]
+    o = [
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,1,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0]],
+        ]
+    assert pad_3d_list(l, 0) == o
+    assert l == o
+
+    # test different sizes
+    l = [[[1, 2]]]
+    o = [
+            [[0,0,0,0],
+             [0,0,0,0],
+             [0,0,0,0]],
+            [[0,0,0,0],
+             [0,1,2,0],
+             [0,0,0,0]],
+            [[0,0,0,0],
+             [0,0,0,0],
+             [0,0,0,0]],
+        ]
+    assert pad_3d_list(l, 0) == o
+
+    l = [[[1],[2]]]
+    o = [
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,1,0],
+             [0,2,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0],
+             [0,0,0]],
+        ]
+    assert pad_3d_list(l, 0) == o
+
+    l = [[[1]],[[2]]]
+    o = [
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,1,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,2,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0]],
+        ]
+    assert pad_3d_list(l, 0) == o
+
+    # test complex
+    l = [[[11,12,13], [13,14,15]],[[21,22,23], [23,24,25]]]
+    o = [
+            [[0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0]],
+            [[0, 0, 0, 0, 0],
+             [0,11,12,13, 0],
+             [0,13,14,15, 0],
+             [0, 0, 0, 0, 0]],
+            [[0, 0, 0, 0, 0],
+             [0,21,22,23, 0],
+             [0,23,24,25, 0],
+             [0, 0, 0, 0, 0]],
+            [[0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0]],
+        ]
+    assert pad_3d_list(l, 0) == o
+
+    # test thickness
+    l = [[[1]]]
+    o = [
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,1,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+        ]
+    assert pad_3d_list(l, 0, 0) == l
+    assert pad_3d_list(l, 0, 2) == o</code></pre>
+</details>
+</dd>
 <dt id="utility.tests.test_misc.test_rotate_list"><code class="name flex">
 <span>def <span class="ident">test_rotate_list</span></span>(<span>)</span>
 </code></dt>
@@ -242,6 +492,7 @@ def test_pad_2d_list():
 <ul class="">
 <li><code><a title="utility.tests.test_misc.test_pad_1d_list" href="#utility.tests.test_misc.test_pad_1d_list">test_pad_1d_list</a></code></li>
 <li><code><a title="utility.tests.test_misc.test_pad_2d_list" href="#utility.tests.test_misc.test_pad_2d_list">test_pad_2d_list</a></code></li>
+<li><code><a title="utility.tests.test_misc.test_pad_3d_list" href="#utility.tests.test_misc.test_pad_3d_list">test_pad_3d_list</a></code></li>
 <li><code><a title="utility.tests.test_misc.test_rotate_list" href="#utility.tests.test_misc.test_rotate_list">test_rotate_list</a></code></li>
 </ul>
 </li>
