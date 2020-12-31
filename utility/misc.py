@@ -87,9 +87,9 @@ def pad_3d_list(data, element, thickness=1):
     width = len(res[0])
     height = len(res[0][0])
     padding = [[element] * height] * width
-    print(padding)
+
     # copy the padding first, else both sides will reference the same list
     x = pad_1d_list(res, padding.copy(), thickness)
-    print(x)
+
     return x
 
