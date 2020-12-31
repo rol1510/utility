@@ -27,6 +27,7 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">from collections import deque
+import copy
 
 def rotate_list(data, amount):
     &#34;&#34;&#34; rotates a list by the specified amount
@@ -44,67 +45,81 @@ def rotate_list(data, amount):
     return list(d)
 
 def pad_1d_list(data, element, thickness=1):
-    &#34;&#34;&#34; adds padding at the start and end of a list
+    &#34;&#34;&#34; Adds padding at the start and end of a list
+
+    This will make a shallow copy of the original
 
     eg: pad_1d_list([1,2], 0) -&gt; returns [0,1,2,0]
 
     Args:
         data:      the list to pad
-        element:   gets added as padding
+        element:   gets added as padding (if its an object, it won&#39;t be instanced, just referenced in the lists)
         thickness: how many layers of padding
     Returns:
-        the list for chaining
+        the padded list
     &#34;&#34;&#34;
+    # shallow copy
+    data = copy.copy(data)
     for i in range(thickness):
         data.insert(0, element)
         data.append(element)
     return data
 
 def pad_2d_list(data, element, thickness=1):
-    &#34;&#34;&#34; adds padding &#34;around&#34; a list of lists
+    &#34;&#34;&#34; Adds padding &#34;around&#34; a list of lists
 
-    List should be a &#34;rectangle&#34;  
+    List should be a &#34;rectangle&#34;.  
+    For the result, every list will be a copied singel instance. Contants will be the same reference
+
     eg: pad_2d_list([[1]], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]
 
     Args:
         data:      the list to pad
-        element:   gets added as padding
+        element:   gets added as padding (if its an object, it won&#39;t be instanced, just referenced in the lists)
         thickness: how many layers of padding
     Returns:
-        the list for chaining
+        the padded list
     &#34;&#34;&#34;
+    res = []
+
     # pad sides
     for i in range(len(data)):
-        pad_1d_list(data[i], element, thickness)
+        res.append(pad_1d_list(data[i], element, thickness))
 
     # pad top and bottom
-    width = len(data[0])
-    top_bottom_padding = [element] * width
-    pad_1d_list(data, top_bottom_padding, thickness)
-    return data
+    width = len(res[0])
+    padding = [element] * width
+    # copy the padding first, else both sides will reference the same list
+    return pad_1d_list(res, padding.copy(), thickness)
 
 def pad_3d_list(data, element, thickness=1):
     &#34;&#34;&#34; adds padding &#34;around&#34; a list of lists of lists
 
-    List should be a &#34;box&#34;
+    List should be a &#34;box&#34;.  
+    For the result, every list will be a copied singel instance. Contants will be the same reference
 
     Args:
         data:      the list to pad
-        element:   gets added as padding
+        element:   gets added as padding (if its an object, it won&#39;t be instanced, just referenced in the lists)
         thickness: how many layers of padding
     Returns:
-        the list for chaining
+        the padded list
     &#34;&#34;&#34;
+    res = []
+
     # pad sides
     for i in range(len(data)):
-        pad_2d_list(data[i], element, thickness)
+        res.append(pad_2d_list(data[i], copy.copy(element), thickness))
 
     # pad top and bottom
-    width = len(data[0])
-    height = len(data[0][0])
+    width = len(res[0])
+    height = len(res[0][0])
     padding = [[element] * height] * width
-    pad_1d_list(data, padding, thickness)
-    return data</code></pre>
+    print(padding)
+    # copy the padding first, else both sides will reference the same list
+    x = pad_1d_list(res, padding.copy(), thickness)
+    print(x)
+    return x</code></pre>
 </details>
 </section>
 <section>
@@ -118,7 +133,8 @@ def pad_3d_list(data, element, thickness=1):
 <span>def <span class="ident">pad_1d_list</span></span>(<span>data, element, thickness=1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>adds padding at the start and end of a list</p>
+<div class="desc"><p>Adds padding at the start and end of a list</p>
+<p>This will make a shallow copy of the original</p>
 <p>eg: pad_1d_list([1,2], 0) -&gt; returns [0,1,2,0]</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -127,28 +143,32 @@ def pad_3d_list(data, element, thickness=1):
 <p>the list to pad</p>
 </dd>
 <dt><strong><code>element</code></strong></dt>
-<dd>gets added as padding</dd>
+<dd>gets added as padding (if its an object, it won't be instanced, just referenced in the lists)</dd>
 <dt><strong><code>thickness</code></strong></dt>
 <dd>how many layers of padding</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>the list for chaining</p></div>
+<p>the padded list</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def pad_1d_list(data, element, thickness=1):
-    &#34;&#34;&#34; adds padding at the start and end of a list
+    &#34;&#34;&#34; Adds padding at the start and end of a list
+
+    This will make a shallow copy of the original
 
     eg: pad_1d_list([1,2], 0) -&gt; returns [0,1,2,0]
 
     Args:
         data:      the list to pad
-        element:   gets added as padding
+        element:   gets added as padding (if its an object, it won&#39;t be instanced, just referenced in the lists)
         thickness: how many layers of padding
     Returns:
-        the list for chaining
+        the padded list
     &#34;&#34;&#34;
+    # shallow copy
+    data = copy.copy(data)
     for i in range(thickness):
         data.insert(0, element)
         data.append(element)
@@ -159,9 +179,10 @@ def pad_3d_list(data, element, thickness=1):
 <span>def <span class="ident">pad_2d_list</span></span>(<span>data, element, thickness=1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>adds padding "around" a list of lists</p>
-<p>List should be a "rectangle"<br>
-eg: pad_2d_list([[1]], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]</p>
+<div class="desc"><p>Adds padding "around" a list of lists</p>
+<p>List should be a "rectangle".<br>
+For the result, every list will be a copied singel instance. Contants will be the same reference</p>
+<p>eg: pad_2d_list([[1]], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>data</code></strong></dt>
@@ -169,38 +190,42 @@ eg: pad_2d_list([[1]], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]</p>
 <p>the list to pad</p>
 </dd>
 <dt><strong><code>element</code></strong></dt>
-<dd>gets added as padding</dd>
+<dd>gets added as padding (if its an object, it won't be instanced, just referenced in the lists)</dd>
 <dt><strong><code>thickness</code></strong></dt>
 <dd>how many layers of padding</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>the list for chaining</p></div>
+<p>the padded list</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def pad_2d_list(data, element, thickness=1):
-    &#34;&#34;&#34; adds padding &#34;around&#34; a list of lists
+    &#34;&#34;&#34; Adds padding &#34;around&#34; a list of lists
 
-    List should be a &#34;rectangle&#34;  
+    List should be a &#34;rectangle&#34;.  
+    For the result, every list will be a copied singel instance. Contants will be the same reference
+
     eg: pad_2d_list([[1]], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]
 
     Args:
         data:      the list to pad
-        element:   gets added as padding
+        element:   gets added as padding (if its an object, it won&#39;t be instanced, just referenced in the lists)
         thickness: how many layers of padding
     Returns:
-        the list for chaining
+        the padded list
     &#34;&#34;&#34;
+    res = []
+
     # pad sides
     for i in range(len(data)):
-        pad_1d_list(data[i], element, thickness)
+        res.append(pad_1d_list(data[i], element, thickness))
 
     # pad top and bottom
-    width = len(data[0])
-    top_bottom_padding = [element] * width
-    pad_1d_list(data, top_bottom_padding, thickness)
-    return data</code></pre>
+    width = len(res[0])
+    padding = [element] * width
+    # copy the padding first, else both sides will reference the same list
+    return pad_1d_list(res, padding.copy(), thickness)</code></pre>
 </details>
 </dd>
 <dt id="utility.misc.pad_3d_list"><code class="name flex">
@@ -208,7 +233,8 @@ eg: pad_2d_list([[1]], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]</p>
 </code></dt>
 <dd>
 <div class="desc"><p>adds padding "around" a list of lists of lists</p>
-<p>List should be a "box"</p>
+<p>List should be a "box".<br>
+For the result, every list will be a copied singel instance. Contants will be the same reference</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>data</code></strong></dt>
@@ -216,12 +242,12 @@ eg: pad_2d_list([[1]], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]</p>
 <p>the list to pad</p>
 </dd>
 <dt><strong><code>element</code></strong></dt>
-<dd>gets added as padding</dd>
+<dd>gets added as padding (if its an object, it won't be instanced, just referenced in the lists)</dd>
 <dt><strong><code>thickness</code></strong></dt>
 <dd>how many layers of padding</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>the list for chaining</p></div>
+<p>the padded list</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -229,25 +255,31 @@ eg: pad_2d_list([[1]], 0) -&gt; returns [[0,0,0], [0,1,0], [0,0,0]]</p>
 <pre><code class="python">def pad_3d_list(data, element, thickness=1):
     &#34;&#34;&#34; adds padding &#34;around&#34; a list of lists of lists
 
-    List should be a &#34;box&#34;
+    List should be a &#34;box&#34;.  
+    For the result, every list will be a copied singel instance. Contants will be the same reference
 
     Args:
         data:      the list to pad
-        element:   gets added as padding
+        element:   gets added as padding (if its an object, it won&#39;t be instanced, just referenced in the lists)
         thickness: how many layers of padding
     Returns:
-        the list for chaining
+        the padded list
     &#34;&#34;&#34;
+    res = []
+
     # pad sides
     for i in range(len(data)):
-        pad_2d_list(data[i], element, thickness)
+        res.append(pad_2d_list(data[i], copy.copy(element), thickness))
 
     # pad top and bottom
-    width = len(data[0])
-    height = len(data[0][0])
+    width = len(res[0])
+    height = len(res[0][0])
     padding = [[element] * height] * width
-    pad_1d_list(data, padding, thickness)
-    return data</code></pre>
+    print(padding)
+    # copy the padding first, else both sides will reference the same list
+    x = pad_1d_list(res, padding.copy(), thickness)
+    print(x)
+    return x</code></pre>
 </details>
 </dd>
 <dt id="utility.misc.rotate_list"><code class="name flex">

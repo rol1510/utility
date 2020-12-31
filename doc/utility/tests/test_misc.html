@@ -30,7 +30,7 @@
 if __name__ == &#34;__main__&#34;:
     import subprocess
     # use -k &lt;string&gt; to only run tests which contain the provided string
-    subprocess.run(&#39;pytest&#39;)
+    subprocess.run(&#39;pytest -vv&#39;)
     exit()
 
 # the repo path has to be added to sys.path, or else this package won&#39;t be found
@@ -55,12 +55,12 @@ def test_rotate_list():
     assert rotate_list(l, 4) == [3, 1, 2]
     assert rotate_list(l, 7) == [3, 1, 2]
 
-def test_pad_1d_list():
+def test_pad_1d_list_padding():
     # test expected behavior
     l = [1, 2, 3]
     o = [0, 1, 2, 3, 0]
     assert pad_1d_list(l, 0) == o
-    assert l == o
+    assert l != o # pad_1d_list should not change the original
 
     # test thickness argument
     assert pad_1d_list([1, 2], 0, -1) == [1, 2]
@@ -72,7 +72,41 @@ def test_pad_1d_list():
     assert pad_1d_list([1, 2], &#39;#-#&#39;) == [&#39;#-#&#39;, 1, 2, &#39;#-#&#39;]
     assert pad_1d_list([1, 2], [1,2]) == [[1,2], 1, 2, [1,2]]
 
-def test_pad_2d_list():
+def test_pad_1d_list_object_references():
+    # outputs different object
+    l = [1, 2, 3]
+    o = [0, 1, 2, 3, 0]
+    res = pad_1d_list(l, 0)
+    assert res == o
+    assert res != l # output and input should not be the same object
+
+    # in this case, the result should not change
+    l[1] = 5
+    assert res == o
+
+    # change of the padding will only change one
+    res[0] = 1
+    assert res == [1, 1, 2, 3, 0]
+
+    # containing objects
+    l = [[1], [2], [3]]
+    p = [4]
+    o = [[4], [1], [2], [3], [4]]
+    res = pad_1d_list(l, p)
+    assert res == o
+
+    # should change the output
+    l[0][0] = 8
+    assert res == [[4], [8], [2], [3], [4]]
+
+    p[0] = 0
+    assert res == [[0], [8], [2], [3], [0]]
+
+    # change of the padding should change both
+    res[0][0] = 1
+    assert res == [[1], [8], [2], [3], [1]]
+
+def test_pad_2d_list_padding():
     # test expected behavior
     l = [[1, 2],
          [3, 4]]
@@ -81,7 +115,7 @@ def test_pad_2d_list():
          [0, 3, 4, 0],
          [0, 0, 0, 0]]
     assert pad_2d_list(l, 0) == o
-    assert l == o
+    assert l != o # pad_2d_list should not change the original
 
     # test thickness argument
     l  = [[1]]
@@ -113,7 +147,31 @@ def test_pad_2d_list():
          [0, 0, 0]]
     assert pad_2d_list(copy.deepcopy(l), 0) == o
 
-def test_pad_3d_list():
+def test_pad_2d_list_object_references():
+    # same list referenced twice
+    a = [1, 2]
+    b = [a, a]
+    o = [[0, 0, 0, 0],
+         [0, 1, 2, 0],
+         [0, 1, 2, 0],
+         [0, 0, 0, 0]]
+
+    assert pad_2d_list(b, 0) == o
+    assert b != o # pad_2d_list should not change the original
+
+    # multiple paddings
+    a = [1, 2]
+    b = [a, a]
+    o = [[0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0],
+         [0, 0, 1, 2, 0, 0],
+         [0, 0, 1, 2, 0, 0],
+         [0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0,]]
+    res = pad_2d_list(b, 0)
+    assert pad_2d_list(res, 0) == o
+
+def test_pad_3d_list_padding():
     # simple test
     l = [[[1]]]
     o = [
@@ -128,7 +186,7 @@ def test_pad_3d_list():
              [0,0,0]],
         ]
     assert pad_3d_list(l, 0) == o
-    assert l == o
+    assert l != o
 
     # test different sizes
     l = [[[1, 2]]]
@@ -180,7 +238,7 @@ def test_pad_3d_list():
     assert pad_3d_list(l, 0) == o
 
     # test complex
-    l = [[[11,12,13], [13,14,15]],[[21,22,23], [23,24,25]]]
+    l = [[[11,12,13],[13,14,15]],[[21,22,23], [23,24,25]]]
     o = [
             [[0, 0, 0, 0, 0],
              [0, 0, 0, 0, 0],
@@ -231,7 +289,53 @@ def test_pad_3d_list():
              [0,0,0,0,0]],
         ]
     assert pad_3d_list(l, 0, 0) == l
-    assert pad_3d_list(l, 0, 2) == o</code></pre>
+    assert pad_3d_list(l, 0, 2) == o
+
+def test_pad_3d_list_object_references():
+    l = [[[1]]]
+    o1 = [
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,1,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0]],
+        ]
+    o2 = [
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,1,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+        ]
+
+    res1 = pad_3d_list(l, 0)
+    res2 = pad_3d_list(res1, 0)
+    assert res1 == o1
+    assert res2 == o2</code></pre>
 </details>
 </section>
 <section>
@@ -241,8 +345,8 @@ def test_pad_3d_list():
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="utility.tests.test_misc.test_pad_1d_list"><code class="name flex">
-<span>def <span class="ident">test_pad_1d_list</span></span>(<span>)</span>
+<dt id="utility.tests.test_misc.test_pad_1d_list_object_references"><code class="name flex">
+<span>def <span class="ident">test_pad_1d_list_object_references</span></span>(<span>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -250,12 +354,56 @@ def test_pad_3d_list():
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def test_pad_1d_list():
+<pre><code class="python">def test_pad_1d_list_object_references():
+    # outputs different object
+    l = [1, 2, 3]
+    o = [0, 1, 2, 3, 0]
+    res = pad_1d_list(l, 0)
+    assert res == o
+    assert res != l # output and input should not be the same object
+
+    # in this case, the result should not change
+    l[1] = 5
+    assert res == o
+
+    # change of the padding will only change one
+    res[0] = 1
+    assert res == [1, 1, 2, 3, 0]
+
+    # containing objects
+    l = [[1], [2], [3]]
+    p = [4]
+    o = [[4], [1], [2], [3], [4]]
+    res = pad_1d_list(l, p)
+    assert res == o
+
+    # should change the output
+    l[0][0] = 8
+    assert res == [[4], [8], [2], [3], [4]]
+
+    p[0] = 0
+    assert res == [[0], [8], [2], [3], [0]]
+
+    # change of the padding should change both
+    res[0][0] = 1
+    assert res == [[1], [8], [2], [3], [1]]</code></pre>
+</details>
+</dd>
+<dt id="utility.tests.test_misc.test_pad_1d_list_padding"><code class="name flex">
+<span>def <span class="ident">test_pad_1d_list_padding</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_pad_1d_list_padding():
     # test expected behavior
     l = [1, 2, 3]
     o = [0, 1, 2, 3, 0]
     assert pad_1d_list(l, 0) == o
-    assert l == o
+    assert l != o # pad_1d_list should not change the original
 
     # test thickness argument
     assert pad_1d_list([1, 2], 0, -1) == [1, 2]
@@ -268,8 +416,8 @@ def test_pad_3d_list():
     assert pad_1d_list([1, 2], [1,2]) == [[1,2], 1, 2, [1,2]]</code></pre>
 </details>
 </dd>
-<dt id="utility.tests.test_misc.test_pad_2d_list"><code class="name flex">
-<span>def <span class="ident">test_pad_2d_list</span></span>(<span>)</span>
+<dt id="utility.tests.test_misc.test_pad_2d_list_object_references"><code class="name flex">
+<span>def <span class="ident">test_pad_2d_list_object_references</span></span>(<span>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -277,7 +425,41 @@ def test_pad_3d_list():
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def test_pad_2d_list():
+<pre><code class="python">def test_pad_2d_list_object_references():
+    # same list referenced twice
+    a = [1, 2]
+    b = [a, a]
+    o = [[0, 0, 0, 0],
+         [0, 1, 2, 0],
+         [0, 1, 2, 0],
+         [0, 0, 0, 0]]
+
+    assert pad_2d_list(b, 0) == o
+    assert b != o # pad_2d_list should not change the original
+
+    # multiple paddings
+    a = [1, 2]
+    b = [a, a]
+    o = [[0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0],
+         [0, 0, 1, 2, 0, 0],
+         [0, 0, 1, 2, 0, 0],
+         [0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0,]]
+    res = pad_2d_list(b, 0)
+    assert pad_2d_list(res, 0) == o</code></pre>
+</details>
+</dd>
+<dt id="utility.tests.test_misc.test_pad_2d_list_padding"><code class="name flex">
+<span>def <span class="ident">test_pad_2d_list_padding</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_pad_2d_list_padding():
     # test expected behavior
     l = [[1, 2],
          [3, 4]]
@@ -286,7 +468,7 @@ def test_pad_3d_list():
          [0, 3, 4, 0],
          [0, 0, 0, 0]]
     assert pad_2d_list(l, 0) == o
-    assert l == o
+    assert l != o # pad_2d_list should not change the original
 
     # test thickness argument
     l  = [[1]]
@@ -319,8 +501,8 @@ def test_pad_3d_list():
     assert pad_2d_list(copy.deepcopy(l), 0) == o</code></pre>
 </details>
 </dd>
-<dt id="utility.tests.test_misc.test_pad_3d_list"><code class="name flex">
-<span>def <span class="ident">test_pad_3d_list</span></span>(<span>)</span>
+<dt id="utility.tests.test_misc.test_pad_3d_list_object_references"><code class="name flex">
+<span>def <span class="ident">test_pad_3d_list_object_references</span></span>(<span>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -328,7 +510,63 @@ def test_pad_3d_list():
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def test_pad_3d_list():
+<pre><code class="python">def test_pad_3d_list_object_references():
+    l = [[[1]]]
+    o1 = [
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,1,0],
+             [0,0,0]],
+            [[0,0,0],
+             [0,0,0],
+             [0,0,0]],
+        ]
+    o2 = [
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,1,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+            [[0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0],
+             [0,0,0,0,0]],
+        ]
+
+    res1 = pad_3d_list(l, 0)
+    res2 = pad_3d_list(res1, 0)
+    assert res1 == o1
+    assert res2 == o2</code></pre>
+</details>
+</dd>
+<dt id="utility.tests.test_misc.test_pad_3d_list_padding"><code class="name flex">
+<span>def <span class="ident">test_pad_3d_list_padding</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_pad_3d_list_padding():
     # simple test
     l = [[[1]]]
     o = [
@@ -343,7 +581,7 @@ def test_pad_3d_list():
              [0,0,0]],
         ]
     assert pad_3d_list(l, 0) == o
-    assert l == o
+    assert l != o
 
     # test different sizes
     l = [[[1, 2]]]
@@ -395,7 +633,7 @@ def test_pad_3d_list():
     assert pad_3d_list(l, 0) == o
 
     # test complex
-    l = [[[11,12,13], [13,14,15]],[[21,22,23], [23,24,25]]]
+    l = [[[11,12,13],[13,14,15]],[[21,22,23], [23,24,25]]]
     o = [
             [[0, 0, 0, 0, 0],
              [0, 0, 0, 0, 0],
@@ -490,9 +728,12 @@ def test_pad_3d_list():
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="utility.tests.test_misc.test_pad_1d_list" href="#utility.tests.test_misc.test_pad_1d_list">test_pad_1d_list</a></code></li>
-<li><code><a title="utility.tests.test_misc.test_pad_2d_list" href="#utility.tests.test_misc.test_pad_2d_list">test_pad_2d_list</a></code></li>
-<li><code><a title="utility.tests.test_misc.test_pad_3d_list" href="#utility.tests.test_misc.test_pad_3d_list">test_pad_3d_list</a></code></li>
+<li><code><a title="utility.tests.test_misc.test_pad_1d_list_object_references" href="#utility.tests.test_misc.test_pad_1d_list_object_references">test_pad_1d_list_object_references</a></code></li>
+<li><code><a title="utility.tests.test_misc.test_pad_1d_list_padding" href="#utility.tests.test_misc.test_pad_1d_list_padding">test_pad_1d_list_padding</a></code></li>
+<li><code><a title="utility.tests.test_misc.test_pad_2d_list_object_references" href="#utility.tests.test_misc.test_pad_2d_list_object_references">test_pad_2d_list_object_references</a></code></li>
+<li><code><a title="utility.tests.test_misc.test_pad_2d_list_padding" href="#utility.tests.test_misc.test_pad_2d_list_padding">test_pad_2d_list_padding</a></code></li>
+<li><code><a title="utility.tests.test_misc.test_pad_3d_list_object_references" href="#utility.tests.test_misc.test_pad_3d_list_object_references">test_pad_3d_list_object_references</a></code></li>
+<li><code><a title="utility.tests.test_misc.test_pad_3d_list_padding" href="#utility.tests.test_misc.test_pad_3d_list_padding">test_pad_3d_list_padding</a></code></li>
 <li><code><a title="utility.tests.test_misc.test_rotate_list" href="#utility.tests.test_misc.test_rotate_list">test_rotate_list</a></code></li>
 </ul>
 </li>
